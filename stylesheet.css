@@ -1,0 +1,133 @@
+@font-face {
+  font-family: "font1";
+  src: url(fonts/norwester.otf);
+}
+
+body {
+  font-family: "font1";
+  background-color: black;
+  margin: 20px;
+}
+
+#title {
+  color: white;
+  padding-left: 20px;
+  font-size: 2em;
+}
+
+header {
+  display: flex;
+  border: 2px solid white;
+  align-items: center;
+}
+
+ul {
+  display: flex;
+  list-style-type: none;
+}
+
+#search {
+  position: absolute;
+  right: 110px;
+  top: 33px;
+}
+
+input {
+  display: none;
+  position: absolute;
+  right: 110px;
+  top: 70px;
+}
+
+a {
+  color: red;
+  font-weight: bold;
+  font-size: 1.5em;
+  padding: 20px;
+  text-decoration: none;
+}
+
+a:hover {
+  cursor: pointer;
+  color: gold;
+}
+
+#profil {
+  background-color: white;
+  position: absolute;
+  right: 50px;
+  top: 50px;
+}
+#logo {
+  background-color: white;
+  position: absolute;
+  left: 850px;
+}
+
+.main_film {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 5px;
+  margin-top: 5px;
+  border: solid white 2px;
+  color: white;
+}
+
+#main_film {
+  width: 30%;
+  height: 30%;
+  margin-top: 10px;
+}
+
+.wrapper {
+  display: grid;
+  grid-template-columns: repeat(2, 100%);
+  overflow: hidden;
+  scroll-behavior: smooth;
+}
+
+section {
+  padding: 3em;
+  width: 100%;
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(6, auto);
+  margin: 100px 0;
+}
+
+.item {
+  position: relative;
+  padding: 2px;
+  transition: 250ms all;
+}
+
+.item:hover {
+  transform: scale(1.2);
+}
+
+.btn_right,
+.btn_left {
+  font-size: 5em;
+  color: white;
+}
+
+#modale_content {
+  display: none;
+  background-image: url(images/filmoss.jpeg);
+  color: black;
+  width: 50%;
+  height: 80%;
+  position: fixed;
+  top: 5em;
+  left: 500px;
+  z-index: 1;
+  border: solid white 3px;
+}
+
+#close {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  z-index: 2;
+}

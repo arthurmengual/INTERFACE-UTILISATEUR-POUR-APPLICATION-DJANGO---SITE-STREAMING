@@ -1,3 +1,4 @@
+entry_point = "http://localhost:8000/api/v1/titles/"
 
 //function to fetch films on a single page in the api
 
@@ -10,7 +11,6 @@ async function get_film(genre, page) {
 //function to fectch 10 films il the api, on two different pages
 
 
-entry_point = "http://localhost:8000/api/v1/titles/"
 
 let caroussel_tags = document.getElementsByClassName('img_film');
 
@@ -27,14 +27,15 @@ async function get_ten_films(genre){
 
 async function display_films_imgs(genre) {
     const films = await get_ten_films(genre);
-    try {
-        for (i = 0; i < 7; i++) {
-            caroussel_tags[i].src = films[i].src
-        }
-    } catch (err) { console.log(error); }
-    
+    for (i = 0; i < 7; i++) {
+        caroussel_tags[i].src = films[i].image_url
+    }
+   
 }
 
+
+
+display_films_imgs('Action')
 
     
     

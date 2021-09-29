@@ -7,6 +7,7 @@ body {
   font-family: "font1";
   background-color: black;
   margin: 20px;
+  color: white;
 }
 
 #title {
@@ -74,8 +75,8 @@ a:hover {
 }
 
 .caroussel {
-  margin-top: 3em;
-  padding: 3em;
+  margin-top: 1em;
+  padding: 1em;
   justify-content: space-between;
   display: flex;
   overflow: hidden;
@@ -92,16 +93,17 @@ a:hover {
   transform: scale(1.2);
 }
 
-.btn_right,
-.btn_left {
+#btn_right,
+#btn_left {
   font-size: 5em;
   color: white;
 }
 
 #modale_content {
   display: none;
-  background: white;
-  color: black;
+  background-repeat: no-repeat;
+  background-color: black;
+  color: white;
   width: 50%;
   height: 80%;
   position: fixed;
@@ -111,9 +113,30 @@ a:hover {
   border: solid white 3px;
 }
 
+#film_infos {
+  position: absolute;
+  right: 50%;
+  font-weight: bold;
+  font-family: "font1";
+  padding: 5px;
+}
+
 #close {
   position: absolute;
   right: 15px;
   top: 15px;
   z-index: 2;
+  color: red;
+}
+
+h1 {
+  text-align: center;
+  padding: 1em;
+}
+
+footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 10em;
+  align-items: ;
 }

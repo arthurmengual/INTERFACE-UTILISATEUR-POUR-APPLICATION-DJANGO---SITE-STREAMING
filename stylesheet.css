@@ -68,10 +68,8 @@ a:hover {
   color: white;
 }
 
-#main_film {
-  width: 100%;
-  height: 100%;
-  margin-top: 10px;
+#main_film:hover {
+  transform: scale(1.2);
 }
 
 .caroussel {
@@ -93,8 +91,8 @@ a:hover {
   transform: scale(1.2);
 }
 
-#btn_right,
-#btn_left {
+.btn_right,
+.btn_left {
   font-size: 5em;
   color: white;
 }
@@ -111,14 +109,26 @@ a:hover {
   left: 500px;
   z-index: 1;
   border: solid white 3px;
+  overflow: auto;
+}
+
+#img_modale {
+  position: absolute;
+  top: 3em;
+  left: 2em;
+  width: 40%;
+  height: 80%;
 }
 
 #film_infos {
   position: absolute;
-  right: 50%;
+  left: 45%;
+  top: 3em;
+  line-height: 1.5em;
   font-weight: bold;
   font-family: "font1";
-  padding: 5px;
+  margin-right: 1.5em;
+  text-align: justify;
 }
 
 #close {
@@ -129,7 +139,8 @@ a:hover {
   color: red;
 }
 
-h1 {
+h2 {
+  border: solid white 3px;
   text-align: center;
   padding: 1em;
 }

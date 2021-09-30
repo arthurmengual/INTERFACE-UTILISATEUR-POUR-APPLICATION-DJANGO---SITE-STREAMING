@@ -28,9 +28,12 @@ async function get_film(filtre, page) {
 let caroussel_tags = document.querySelectorAll('.img_film');
 
 async function get_ten_films(filtre){
-    const films_1 = await get_film(filtre, 1)
-    const films_2 = await get_film(filtre, 2)
-    const all_films = await films_1.concat(films_2)
+    const films_1 = await get_film(filtre, 1);
+    const films_2 = await get_film(filtre, 2);
+    const all_films = await films_1.concat(films_2);
+    for (let film of all_films) {
+        if (!film.image_url) {all_films.splice(film, 1)}
+    }
     return all_films
 }
 
@@ -51,34 +54,41 @@ async function display_films_imgs(filtre, balises) {
 }
          
 
+//buttons
+function set_buttons(nb_of_caroussel, filtre, balises) {
+    const btn_right = document.querySelector('#btn_right' + nb_of_caroussel);
+    const btn_left = document.querySelector('#btn_left' + nb_of_caroussel);
+
+    btn_right.onclick = function () {
+        display_films_imgs(filtre, balises);
+    }
+
+    btn_left.onclick = function () {
+        display_films_imgs(filtre, balises);
+}           
+}
+
+
 //1st caroussel
 const BalisesCaroussel1 = document.querySelectorAll('.img_caroussel1');
 display_films_imgs('?sort_by=imdb_score', BalisesCaroussel1);
+set_buttons('1', '?sort_by=imdb_score', BalisesCaroussel1)
 
 //2nd Caroussel
 const BalisesCaroussel2 = document.querySelectorAll('.img_caroussel2');
 display_films_imgs('?genre=Action', BalisesCaroussel2);
+set_buttons('2', '?genre=Action', BalisesCaroussel2)
 
 //3rd caroussel
 const BalisesCaroussel3 = document.querySelectorAll('.img_caroussel3');
 display_films_imgs('?genre=Family', BalisesCaroussel3);
+set_buttons('3', '?genre=Family', BalisesCaroussel3)
 
 //4th caroussel
 const BalisesCaroussel4 = document.querySelectorAll('.img_caroussel4');
 display_films_imgs('?genre=Comedy', BalisesCaroussel4);
+set_buttons('4', '?genre=Comedy', BalisesCaroussel4)
 
-
-//buttons
-const btn_right = document.querySelector('#btn_right1');
-const btn_left = document.querySelector('#btn_left1');
-
-btn_right.onclick = function () {
-    display_films_imgs('&genre=Action');
-}
-
-btn_left.onclick = function () {
-    display_films_imgs('&genre=Action')
-}
 
 
 /******MODALE PART */

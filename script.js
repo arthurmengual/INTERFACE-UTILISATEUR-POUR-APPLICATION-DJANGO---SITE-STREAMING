@@ -12,7 +12,7 @@ async function displayMainFilm(url){
     main_film.id = data.results[0].id;
 }
 
-displayMainFilm(url)
+displayMainFilm(url);
 
 /****CAROUSSEL PART */
 
@@ -52,9 +52,24 @@ async function display_films_imgs(filtre, balises) {
     k = j;
     j = (j+1)%7;
 }
-         
+      
+//go backwrd
+let l = 5;
+let m = 4;
 
-//buttons
+async function display_backward(filtre, balises) {
+    const films = await get_ten_films(filtre);
+    for (let balise of balises) {
+        l = (l + 1) % 7;
+        console.log(l);
+        balise.src = films[l].image_url;
+        balise.id = films[l].id;
+    }
+    l = m;
+    m = (m - 1+7) % 7;
+}
+
+//Setting the buttons
 function set_buttons(nb_of_caroussel, filtre, balises) {
     const btn_right = document.querySelector('#btn_right' + nb_of_caroussel);
     const btn_left = document.querySelector('#btn_left' + nb_of_caroussel);
@@ -64,7 +79,7 @@ function set_buttons(nb_of_caroussel, filtre, balises) {
     }
 
     btn_left.onclick = function () {
-        display_films_imgs(filtre, balises);
+        display_backward(filtre, balises);
 }           
 }
 
@@ -138,11 +153,13 @@ for (let film of films) {
 
 
 //main film
-const main_film = document.querySelector('.main');
-const id = main_film.id;
-main_film.onclick = function () {
-    create_modal(id);
+const main = document.querySelector('.main');
+const id = main.id;
+main.onclick = function () {
+    create_modal(9); /*cant find id. log(main.id) => empty, log(main) contains id**/
 }
+
+
 
 
 //close modale

@@ -16,7 +16,6 @@ displayMainFilm(url);
 
 /****CAROUSSEL PART */
 
-
 //function to get movie on a single page of the api
 async function get_film(filtre, page) {
     const response = await fetch(url + filtre + '&page=' + page);
@@ -24,85 +23,108 @@ async function get_film(filtre, page) {
     return data.results
 }
 
-//function to fectch films on two pages of the api
-let caroussel_tags = document.querySelectorAll('.img_film');
 
-async function get_ten_films(filtre){
+//function to fectch films on two pages of the api
+async function get_seven_films(filtre){
     const films_1 = await get_film(filtre, 1);
     const films_2 = await get_film(filtre, 2);
     const all_films = await films_1.concat(films_2);
     for (let film of all_films) {
         if (!film.image_url) {all_films.splice(film, 1)}
     }
-    return all_films
+    return all_films.slice(0,7)
 }
 
 
-//function to display films images et infos in the caroussel, also stores the film id
-let k = -1;
-let j = 0;
-
-async function display_films_imgs(filtre, balises) {
-    const films = await get_ten_films(filtre);
-    for (let balise of balises) {
-        k = (k + 1) % 7;
-        balise.src = films[k].image_url;
-        balise.id = films[k].id;
+//function to create a caroussel
+async function create_caroussel(genre) {
+    movies = await get_seven_films(`?genre=${genre}`);
+    var div_container = document.createElement('container');
+    document.body.appendChild(div_container);
+    var title = document.createElement('h2');
+    title.textContent = genre;
+    div_container.appendChild(title)
+    var div_caroussel = document.createElement('div');
+    div_caroussel.setAttribute('class', 'caroussel');
+    div_caroussel.setAttribute('id', `caroussel ${genre}`);
+    div_container.appendChild(div_caroussel);
+    var btn_l = document.createElement('a');
+    btn_l.setAttribute('class', 'btn_left');
+    btn_l.setAttribute('id', `btn_left_${genre}`);
+    btn_l.textContent = '<';
+    div_caroussel.appendChild(btn_l);
+    let i = 0;
+    for (movie of movies) {
+        var div_item = document.createElement(('div'));
+        div_item.setAttribute('class', `item${genre}`);
+        div_caroussel.appendChild(div_item);
+        var a = document.createElement('a');
+        a.setAttribute('href', '#');
+        a.setAttribute('class', 'img')
+        var image = document.createElement('img');
+        image.setAttribute('class', `img_caroussel${genre}`);
+        image.setAttribute('id', movie.id);
+        image.setAttribute('src', movie.image_url);
+        div_item.appendChild(a);
+        a.appendChild(image);
+        if (i < 3) {
+            div_item.style.display = 'none'
+        }
+        i++;
     }
-    k = j;
-    j = (j+1)%7;
-}
-      
-//go backwrd
-let l = 5;
-let m = 4;
+    var btn_r = document.createElement('a');
+    btn_r.setAttribute('class', 'btn_right');
+    btn_r.setAttribute('id', `btn_right_${genre}`);
 
-async function display_backward(filtre, balises) {
-    const films = await get_ten_films(filtre);
-    for (let balise of balises) {
-        l = (l + 1) % 7;
-        console.log(l);
-        balise.src = films[l].image_url;
-        balise.id = films[l].id;
-    }
-    l = m;
-    m = (m - 1+7) % 7;
+    btn_r.textContent = '>';
+    div_caroussel.appendChild(btn_r);
 }
+
+
+//Display caroussels
+const genres = ['Action', 'Family', 'Comedy']
+for (let genre of genres) {
+    create_caroussel(genre)
+}
+
+
+//scroll caroussel
+var DicoIndex = {
+    IndexHideAction: 0, IndexShowAction: 4, IndexHideComedy: 0, IndexShowComedy: 4,
+    IndexHideFamily: 0, IndexShowFamily: 4, IndexHideC4: 0, IndexShowC4: 4}
+
+function scroll_forward(IndexHide, IndexShow, MoviesSelectors) {
+    IndexHide = (IndexHide + 1) % 7;
+    IndexShow = (IndexShow + 1) % 7;
+    console.log(MoviesSelectors);
+    MoviesSelectors[IndexHide].style.display = 'none';
+    MoviesSelectors[IndexShow].style.display = 'block'    
+}
+
+function scroll_backward(IndexHide, IndexShow, MoviesSelectors) {
+    IndexHide = (IndexHide - 1) % 7;
+    IndexShow = (IndexShow - 1) % 7;
+    console.log(MoviesSelectors);
+    MoviesSelectors[IndexHide].style.display = 'none';
+    MoviesSelectors[IndexShow].style.display = 'block'    
+}
+
 
 //Setting the buttons
-function set_buttons(nb_of_caroussel, filtre, balises) {
-    const btn_right = document.querySelector('#btn_right' + nb_of_caroussel);
-    const btn_left = document.querySelector('#btn_left' + nb_of_caroussel);
-
-    btn_right.onclick = function () {
-        display_films_imgs(filtre, balises);
-    }
-
-    btn_left.onclick = function () {
-        display_backward(filtre, balises);
-}           
+for (let genre of genres) {
+    let btnR = document.getElementById(`btn_right_${genre}`);
+    let btnL = document.getElementById(`btn_left_${genre}`);
+    let selectors = document.getElementsByClassName(`item${genre}`)
+    btnR.onclick = scroll_forward(DicoIndex[`IndexHide${genre}`],
+        DicoIndex[`IndexShow${genre}`], selectors)
+    btnL.onclick = scroll_backward(DicoIndex[`IndexHide${genre}`],
+        DicoIndex[`IndexShow${genre}`], selectors)
 }
 
 
-//1st caroussel
-const BalisesCaroussel1 = document.querySelectorAll('.img_caroussel1');
-display_films_imgs('?sort_by=imdb_score', BalisesCaroussel1);
-set_buttons('1', '?sort_by=imdb_score', BalisesCaroussel1)
 
-//2nd Caroussel
-const BalisesCaroussel2 = document.querySelectorAll('.img_caroussel2');
-display_films_imgs('?genre=Action', BalisesCaroussel2);
-set_buttons('2', '?genre=Action', BalisesCaroussel2)
 
-//3rd caroussel
-const BalisesCaroussel3 = document.querySelectorAll('.img_caroussel3');
-display_films_imgs('?genre=Family', BalisesCaroussel3);
-set_buttons('3', '?genre=Family', BalisesCaroussel3)
 
-//4th caroussel
-const BalisesCaroussel4 = document.querySelectorAll('.img_caroussel4');
-display_films_imgs('?genre=Comedy', BalisesCaroussel4);
-set_buttons('4', '?genre=Comedy', BalisesCaroussel4)
 
 
 
@@ -114,36 +136,21 @@ function create_modal(film_id) {
     fetch(url + film_id)
         .then(res => res.json())
         .then(data => {
-            const title = data.title;
-            const genre = data.genres;
-            const image = data.image_url;
-            const release_date = data.date_published;
-            const rate = data.rated;
-            const score = data.metascore;
-            const director = data.directors;
-            const actors = data.actors;
-            const time = data.duration;
-            const country = data.countries;
-            const box_office = data.reviews_from_users;
-            const resumen = data.description;
-            document.querySelector('#img_modale').src = image;
-            document.querySelector('#film_infos').innerHTML = 'Title: ' + title +
-                '<br/>' + 'Genre: ' + genre + '<br/>' + 'Release data: ' + release_date +
-                '<br/>' + 'Rate: ' + rate + '<br/>' + 'Score: ' + score + '<br/>' +
-                'Director: ' + director + '<br/>' + 'Actors: ' + actors +
-                '<br/>' + 'Duration: ' + time + '<br/>' + 'Country: ' + country + '<br/>' +
-                'Box office: ' + box_office + '<br/>' + 'Description: ' + resumen;
+            document.querySelector('#img_modale').src = data.image_url;
+            document.querySelector('#film_infos').innerHTML = `Title: 
+            ${data.title} <br/> Genre: ${data.genres} <br/> Release date:
+            ${data.date_published} <br/> Rate: ${data.rated} <br/> Score: 
+            ${data.metascore} <br/> Director: ${data.directors} <br/> Actors: 
+            ${data.actors} <br/> Duration: ${data.duration} <br/> Country: 
+            ${data.countries} <br/> Box office: ${data.reviews_from_users} <br/> Description: 
+            ${data.description}`;
         })
         .then(document.querySelector('#modale_content').style.display = 'flex')
  }
 
 
 //caroussel
-const films1 = document.getElementsByClassName('img_caroussel1');
-const films2 = document.getElementsByClassName('img_caroussel2');
-const films3 = document.getElementsByClassName('img_caroussel3');
-const films4 = document.getElementsByClassName('img_caroussel4');
-const films = [...films1, ...films2, ...films3, ...films4];
+const films = document.getElementsByClassName('img_caroussel');
 for (let film of films) {
     film.onclick = function () {
         let id = film.id
@@ -151,6 +158,13 @@ for (let film of films) {
     }
 }
 
+const images = document.images
+for (let image of images) {
+    image.onclick = function () {
+        let id = image.id;
+        create_modal(id)
+    }
+}
 
 //main film
 const main = document.querySelector('.main');
@@ -160,11 +174,16 @@ main.onclick = function () {
 }
 
 
-
-
 //close modale
 const close = document.querySelector('#close');
 close.onclick = function () {
     document.querySelector('#modale_content').style.display = 'none'
 }
+
+
+
+
+
+
+
 

@@ -12,8 +12,6 @@ async function displayMainFilm(url){
     main_film.id = data.results[0].id;
 }
 
-displayMainFilm(url);
-
 /****CAROUSSEL PART */
 
 //function to get movie on a single page of the api
@@ -67,7 +65,7 @@ async function create_caroussel(genre) {
         image.setAttribute('src', movie.image_url);
         div_item.appendChild(a);
         a.appendChild(image);
-        if (i < 3) {
+        if (i > 4) {
             div_item.style.display = 'none'
         }
         i++;
@@ -81,51 +79,29 @@ async function create_caroussel(genre) {
 }
 
 
-//Display caroussels
-const genres = ['Action', 'Family', 'Comedy']
-for (let genre of genres) {
-    create_caroussel(genre)
-}
-
-
 //scroll caroussel
 var DicoIndex = {
     IndexHideAction: 0, IndexShowAction: 4, IndexHideComedy: 0, IndexShowComedy: 4,
     IndexHideFamily: 0, IndexShowFamily: 4, IndexHideC4: 0, IndexShowC4: 4}
 
-function scroll_forward(IndexHide, IndexShow, MoviesSelectors) {
+function scroll_forward(genre, IndexHide, IndexShow, MoviesSelectors) {
     IndexHide = (IndexHide + 1) % 7;
+    DicoIndex[`IndexHide${genre}`] = IndexHide;
     IndexShow = (IndexShow + 1) % 7;
-    console.log(MoviesSelectors);
+    DicoIndex[`IndexShow${genre}`] = IndexShow;
     MoviesSelectors[IndexHide].style.display = 'none';
     MoviesSelectors[IndexShow].style.display = 'block'    
 }
 
-function scroll_backward(IndexHide, IndexShow, MoviesSelectors) {
-    IndexHide = (IndexHide - 1) % 7;
-    IndexShow = (IndexShow - 1) % 7;
-    console.log(MoviesSelectors);
+function scroll_backward(genre, IndexHide, IndexShow, MoviesSelectors) {
+    IndexHide = (IndexHide - 1 + 7) % 7;
+    DicoIndex[`IndexHide${genre}`] = IndexHide;
+    IndexShow = (IndexShow - 1 + 7) % 7;
+    DicoIndex[`IndexShow${genre}`] = IndexShow;
     MoviesSelectors[IndexHide].style.display = 'none';
-    MoviesSelectors[IndexShow].style.display = 'block'    
+    MoviesSelectors[IndexShow].style.display = 'block'
+
 }
-
-
-//Setting the buttons
-for (let genre of genres) {
-    let btnR = document.getElementById(`btn_right_${genre}`);
-    let btnL = document.getElementById(`btn_left_${genre}`);
-    let selectors = document.getElementsByClassName(`item${genre}`)
-    btnR.onclick = scroll_forward(DicoIndex[`IndexHide${genre}`],
-        DicoIndex[`IndexShow${genre}`], selectors)
-    btnL.onclick = scroll_backward(DicoIndex[`IndexHide${genre}`],
-        DicoIndex[`IndexShow${genre}`], selectors)
-}
-
-
-
-
-
-
 
 
 /******MODALE PART */
@@ -137,44 +113,32 @@ function create_modal(film_id) {
         .then(res => res.json())
         .then(data => {
             document.querySelector('#img_modale').src = data.image_url;
-            document.querySelector('#film_infos').innerHTML = `Title: 
-            ${data.title} <br/> Genre: ${data.genres} <br/> Release date:
-            ${data.date_published} <br/> Rate: ${data.rated} <br/> Score: 
-            ${data.metascore} <br/> Director: ${data.directors} <br/> Actors: 
-            ${data.actors} <br/> Duration: ${data.duration} <br/> Country: 
-            ${data.countries} <br/> Box office: ${data.reviews_from_users} <br/> Description: 
-            ${data.description}`;
+            document.querySelector('#film_infos').innerHTML = `<strong> Title </strong>: &nbsp; &nbsp;  
+            ${data.title} <br/> <strong> Genre </strong>: &nbsp; &nbsp; ${data.genres} <br/> <strong> Release date: </strong> &nbsp; &nbsp;
+            ${data.date_published} <br/> <strong> Rate: </strong> &nbsp; &nbsp; ${data.rated} <br/> <strong> Score: </strong> &nbsp; &nbsp;
+            ${data.metascore} <br/> <strong>D irector: </strong> &nbsp; &nbsp; ${data.directors} <br/> <strong> Actors: </strong> &nbsp; &nbsp;
+            ${data.actors} <br/> <strong> Duration: </strong> &nbsp; &nbsp; ${data.duration} <br/> <strong> Country: </strong> &nbsp; &nbsp;
+            ${data.countries} <br/> <strong>B ox office: </strong> &nbsp; &nbsp; ${data.reviews_from_users} <br/> <strong> Description: </strong>
+            &nbsp; &nbsp; ${data.description}`;
         })
         .then(document.querySelector('#modale_content').style.display = 'flex')
  }
 
 
-//caroussel
-const films = document.getElementsByClassName('img_caroussel');
-for (let film of films) {
-    film.onclick = function () {
-        let id = film.id
+
+//main film modale
+async function main_film(){
+    await displayMainFilm(url);
+    const main = document.querySelector('.main');
+    const id = main.id;
+    main.onclick = function () {
         create_modal(id);
     }
 }
 
-const images = document.images
-for (let image of images) {
-    image.onclick = function () {
-        let id = image.id;
-        create_modal(id)
-    }
-}
+main_film()
 
-//main film
-const main = document.querySelector('.main');
-const id = main.id;
-main.onclick = function () {
-    create_modal(9); /*cant find id. log(main.id) => empty, log(main) contains id**/
-}
-
-
-//close modale
+//close btn modale
 const close = document.querySelector('#close');
 close.onclick = function () {
     document.querySelector('#modale_content').style.display = 'none'
@@ -182,8 +146,30 @@ close.onclick = function () {
 
 
 
+/**DISPLAY CAROUSELS */
 
 
+//Display caroussels and set buttns
+async function display_caroussel(genre) {
+    await create_caroussel(genre);
+    var btnR = document.getElementById(`btn_right_${genre}`);
+    var btnL = document.getElementById(`btn_left_${genre}`);
+    var selectors = document.getElementsByClassName(`item${genre}`);
+    btnR.onclick = scroll_forward(genre, DicoIndex[`IndexHide${genre}`],
+        DicoIndex[`IndexShow${genre}`], selectors);
+    btnL.onclick = scroll_backward(genre, DicoIndex[`IndexHide${genre}`],
+        DicoIndex[`IndexShow${genre}`], selectors);
+    
+    const films = document.getElementsByClassName(`img_caroussel${genre}`);
+    for (let film of films) {
+        film.onclick = function () {
+            let id = film.id
+            create_modal(id);
+        }   
+    }   
+    }
 
-
-
+const genres = ['Action', 'Family', 'Comedy']
+for (let genre of genres){
+    display_caroussel(genre)
+}

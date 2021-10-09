@@ -68,7 +68,8 @@ a:hover {
   color: white;
 }
 
-#main_film:hover {
+#main_film:hover,
+.main:hover {
   transform: scale(1.2);
 }
 
@@ -153,5 +154,9 @@ footer {
   display: flex;
   justify-content: center;
   margin-top: 10em;
-  align-items: ;
+}
+
+footer a {
+  color: white;
+  font-size: 1em;
 }

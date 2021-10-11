@@ -1,7 +1,7 @@
 ## Table of Contents
 
 1. [General Info](#general-info)
-2. [Technologies](#technologies)
+2. [Languages](#Languages)
 3. [Installation](#installation)
 4. [Collaboration](#collaboration)
 5. [FAQs](#faqs)
@@ -17,30 +17,44 @@ are downloaded from a local API, OCMovies-API.
 
 ![Image text](https://user.oc-static.com/upload/2020/09/18/16004298163529_P5.png)
 
-## Technologies
+## Languages
 
 ---
 
-A list of technologies used within the project:
-
-- [Technologie name](https://example.com): Version 12.3
-- [Technologie name](https://example.com): Version 2.34
-- [Library name](https://example.com): Version 1234
+- HTML5
+- CSS
+- Javascript
 
 ## Installation of the local api
 
 ---
 
-A little intro about the installation.
+You need to install the local API to access the website resources.
+1-go to the following repository: https://github.com/OpenClassrooms-Student-Center/OCMovies-API-EN-FR where you will find all the documentation.
 
-```
-$ git clone https://example.com
-$ cd ../path/to/the/file
-$ npm install
-$ npm start
-```
+'''
+Installation with pipenv:
 
-Side information: To use the application in a special environment use `lorem ipsum` to start
+-Clone this repository using $ git clone https://github.com/OpenClassrooms-Student-Center/OCMovies-API-EN-FR.git (you can also download the code using as a zip file)
+-Move to the ocmovies-api root folder with $ cd ocmovies-api-en
+-Install project dependencies with pipenv install
+-Create and populate project database with pipenv run python manage.py create_db
+-Run the server with pipenv run python manage.py runserver
+
+'''
+
+Installation with virtual env:
+
+-Clone this repository using $ git clone clone https://github.com/OpenClassrooms-Student-Center/OCMovies-API-EN-FR.git (you can also download the code using as a zip file)
+-Move to the ocmovies-api root folder with $ cd ocmovies-api-en
+-Create a virtual environment for the project with $ py -m venv env on windows or $ python3 -m venv env on macos or linux.
+-Activate the virtual environment with $ env\Scripts\activate on windows or $ source env/bin/activate on macos or linux.
+-Install project dependencies with $ pip install -r requirements.txt
+-Create and populate the project database with $ python manage.py create_db
+-Run the server with $ python manage.py runserver-
+
+##utilization of the website
+-slide the index.html file in your web browzer and the website will display.
 
 ## Collaboration
 
@@ -52,20 +66,4 @@ Side information: To use the application in a special environment use `lorem ips
 
 ---
 
-A list of frequently asked questions
-
-1. **This is a question in bold**
-   Answer of the first question with _italic words_.
-2. **Second question in bold**
-   To answer this question we use an unordered list:
-
-- First point
-- Second Point
-- Third point
-
-3. **Third question in bold**
-   Answer of the third question with _italic words_.
-4. **Fourth question in bold**
-   | Headline 1 in the tablehead | Headline 2 in the tablehead | Headline 3 in the tablehead |
-   |:--------------|:-------------:|--------------:|
-   | text-align left | text-align center | text-align right |
+Refer to the help section on the website

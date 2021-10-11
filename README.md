@@ -53,7 +53,8 @@ Installation with virtual env:
 -Create and populate the project database with $ python manage.py create_db<br/>
 -Run the server with $ python manage.py runserver-<br/>
 
-##utilization of the website
+## utilization of the website
+
 -slide the index.html file in your web browzer and the website will display.
 
 ## Collaboration
